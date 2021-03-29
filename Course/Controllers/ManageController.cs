@@ -54,7 +54,7 @@ namespace ManagmentServer.Controllers
         public async Task<string> GetAsync(string text, CancellationToken cancellation)
         {
             cancellation.ThrowIfCancellationRequested();
-            Uri requestUrl = new Uri($"https://localhost:44337/MapReducer/MapReducer?text={text}");
+            Uri requestUrl = new Uri($"https://localhost:5001/MapReducer/MapReducer?text={text}");
             HttpClient httpClient = new HttpClient();
 
             var response = await httpClient.GetAsync(requestUrl, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);

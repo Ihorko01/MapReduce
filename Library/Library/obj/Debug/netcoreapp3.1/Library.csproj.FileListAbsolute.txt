@@ -1,0 +1,8 @@
+D:\Program Files\source\repos\Library\Library\bin\Debug\netcoreapp3.1\Library.deps.json
+D:\Program Files\source\repos\Library\Library\bin\Debug\netcoreapp3.1\Library.dll
+D:\Program Files\source\repos\Library\Library\bin\Debug\netcoreapp3.1\Library.pdb
+D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.AssemblyInfoInputs.cache
+D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.AssemblyInfo.cs
+D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.csproj.CoreCompileInputs.cache
+D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.dll
+D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.pdb
