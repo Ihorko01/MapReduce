@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\course\\Course\\AppServer1\\AppServer1.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\AppServer1\\AppServer1.csproj",
       "projectName": "AppServer1",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\course\\Course\\AppServer1\\AppServer1.csproj",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\AppServer1\\AppServer1.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\course\\Course\\AppServer1\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\AppServer1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

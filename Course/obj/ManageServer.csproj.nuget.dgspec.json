@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Desktop\\course\\Course\\Course\\ManageServer.csproj": {}
+    "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\Course\\ManageServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Desktop\\course\\Course\\Course\\ManageServer.csproj": {
+    "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\Course\\ManageServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\course\\Course\\Course\\ManageServer.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\Course\\ManageServer.csproj",
         "projectName": "ManageServer",
-        "projectPath": "C:\\Users\\Admin\\Desktop\\course\\Course\\Course\\ManageServer.csproj",
+        "projectPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\Course\\ManageServer.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Desktop\\course\\Course\\Course\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\Course\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
