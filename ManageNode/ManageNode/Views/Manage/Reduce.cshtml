@@ -1,0 +1,26 @@
+﻿@model List<ManageNode.ViewModel.ReduceViewModel>
+
+@{
+    ViewData["Titel"] = "Index";
+}
+
+
+<table class="table">
+    <tr>
+        <th>Результат Тасування</th>
+        <th>Результат Мапу</th>
+        <th>Вузол</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Shuffles)</td>
+            <td>@Html.DisplayFor(modelItem => item.Reduces)</td>
+            <td>@Html.DisplayFor(modelItem => item.Node)</td>
+        </tr>
+    }
+
+    <input type="button"
+           value="Інформація про Файл" onclick="location.href='@Url.Action("Index", "Manage")'" />
+</table>

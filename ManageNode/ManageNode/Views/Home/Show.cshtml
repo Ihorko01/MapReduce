@@ -1,0 +1,39 @@
+﻿@model List<ManageNode.ViewModel.FileViewModel>
+
+@{
+    Layout = null;
+    ViewData["Titel"] = "Show";
+}
+
+<div>
+    <table class="table table-bordered table-responsive table-hover" style="width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border: 1px solid
+">
+        <tr>
+            <th>Parts</th>
+            <th>Map</th>
+            <th>Map Node</th>
+            <th>Shuffle</th>
+            <th>Sort</th>
+            <th>Reduce</th>
+            <th>Reduce Node</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Node)</td>
+                <td>@Html.DisplayFor(modelItem => item.CountMap)</td>
+                <td>@Html.DisplayFor(modelItem => item.TimeMap)</td>
+                <td>@Html.DisplayFor(modelItem => item.CountShuffle)</td>
+                <td>@Html.DisplayFor(modelItem => item.TimeShuffle)</td>
+                <td>@Html.DisplayFor(modelItem => item.CountReduce)</td>
+                <td>@Html.DisplayFor(modelItem => item.TimeReduce)</td>
+            </tr>
+        }
+    </table>
+</div>

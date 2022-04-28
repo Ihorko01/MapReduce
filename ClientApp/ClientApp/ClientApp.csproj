@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MapReduceLibrary">
+      <HintPath>..\..\MapReduceLibrary\MapReduceLibrary\bin\Debug\netstandard2.0\MapReduceLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

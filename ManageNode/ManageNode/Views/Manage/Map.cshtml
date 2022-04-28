@@ -1,0 +1,26 @@
+﻿@model List<ManageNode.ViewModel.MapViewModel>
+
+@{
+    ViewData["Titel"] = "Index";
+}
+
+
+<table class="table">
+    <tr>
+        <th>Частина</th>
+        <th>Результат Мапу</th>
+        <th>Вузол</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Subs)</td>
+            <td>@Html.DisplayFor(modelItem => item.Maps)</td>
+            <td>@Html.DisplayFor(modelItem => item.Node)</td>
+        </tr>
+    }
+
+    <input type="button"
+           value="Інформація про Файл" onclick="location.href='@Url.Action("Index", "Manage")'" />
+</table>

@@ -1,0 +1,17 @@
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.exe
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.deps.json
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.runtimeconfig.json
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.runtimeconfig.dev.json
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.dll
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.pdb
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\MapReduceLibrary.dll
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\MapReduceLibrary.pdb
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.csprojAssemblyReference.cache
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.AssemblyInfoInputs.cache
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.AssemblyInfo.cs
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.csproj.CopyComplete
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.dll
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.pdb
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\obj\Debug\netcoreapp3.1\ClientApp.genruntimeconfig.cache
+C:\Users\Admin\source\repos\Курсова\ClientApp\ClientApp\bin\Debug\netcoreapp3.1\ClientApp.dll.config
