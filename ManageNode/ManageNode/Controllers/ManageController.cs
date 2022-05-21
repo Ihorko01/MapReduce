@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using ManageNode.ViewModel;
 using System.Net;
 using Microsoft.IdentityModel.Protocols;
+using System.Diagnostics;
 
 namespace ManagmentServer.Controllers
 {
@@ -26,10 +27,38 @@ namespace ManagmentServer.Controllers
         {
             this.db = db;
         }
-        [HttpPost]
 
-        public void SaveInfoMap([FromBody] List<object> Info)
+        [HttpPost]
+        public void SaveInfoFile([FromBody] string path)
         {
+            db.Sources.Add(new MainFile
+            {
+                Path = path
+            });
+            db.SaveChanges();
+        }
+
+        [HttpPost]
+        public void SaveInfoLine([FromBody] string line)
+        {
+            db.Lines.Add(new Line
+            {
+                FileId = db.Sources.Max(f => f.Id),
+                Data = line
+            });
+            db.SaveChanges();
+        }
+
+        [HttpPost]
+        public void SaveInfoMap([FromBody] List<string> Info)
+        {
+            db.Map.Add(new MapFile
+            {
+                LineId = db.Lines.Max(l => l.Id),
+                Data = Info[0]
+            });
+            db.SaveChanges();
+
             existInTable = db.Statistics.Any(item => item.Node == Info[0].ToString());
             if (existInTable)
             {
@@ -46,8 +75,52 @@ namespace ManagmentServer.Controllers
         }
 
         [HttpPost]
+        public void StartShuffle()
+        {
+            var ports = GetPorts().ToList();
+            int index = 0;
+            while (ports.Count != 0)
+            {
+                Stopwatch sw = Stopwatch.StartNew();
+                string p = $"{ports[index % ports.Count]}Exchange";
+                var response = GetResponseFromURI(new Uri(p)).Result;
+                sw.Stop();
+                SaveInfoShuffle(new List<object> { ports[index % ports.Count], sw.Elapsed });
+                if (response == "False")
+                {
+                    ports.RemoveAt(index % ports.Count);
+                }
+                
+                index += 1;
+            }
+        }
+
+        private static async Task<string> GetResponseFromURI(Uri u)
+        {
+            var response = "";
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage result = await client.GetAsync(u);
+                if (result.IsSuccessStatusCode)
+                {
+                    response = await result.Content.ReadAsStringAsync();
+                }
+            }
+            return response;
+        }
+
+        [HttpPost]
         public void SaveInfoShuffle([FromBody] List<object> Info)
         {
+            var fileId = db.Sources.Max(f => f.Id);
+            var line = db.Lines.Where(l => l.FileId == fileId && !db.Shuffles.Any(s => s.MapId == l.Id)).FirstOrDefault();
+            db.Shuffles.Add(new Shuffle 
+            { 
+                MapId = line.Id,
+                Data = Info[0].ToString()
+            });
+            db.SaveChanges();
+
             Statistics statistics = db.Statistics.Where(item => item.Node == Info[0].ToString()).FirstOrDefault();
             if (statistics.CountShuffle != 0)
             {
@@ -91,6 +164,16 @@ namespace ManagmentServer.Controllers
                 db.Statistics.Remove(record);
             }
             db.SaveChanges();
+            var ports = new List<string>
+            {
+                ConfigurationManager.AppSettings["datanode1"].ToString(),
+                ConfigurationManager.AppSettings["datanode2"].ToString(),
+                ConfigurationManager.AppSettings["datanode3"].ToString()
+            };
+            foreach (var item in ports)
+            {
+                var response = GetResponseFromURI(new Uri($"{item}Clear"));
+            }
         }
 
         public ActionResult Index()
@@ -102,7 +185,7 @@ namespace ManagmentServer.Controllers
             }
             db.Statistics.RemoveRange(db.Statistics);
             db.SaveChanges();
-
+            
             return Json(fileView);
         }
 
@@ -119,7 +202,6 @@ namespace ManagmentServer.Controllers
         [HttpGet]
         public string[] GetPorts()
         {
-
             string[] allPorts = new string[]
             {
                     ConfigurationManager.AppSettings["datanode1"].ToString(),
@@ -145,9 +227,9 @@ namespace ManagmentServer.Controllers
                 {
 
                 }
-
             }
             return healthyPorts.ToArray();
         }
+
     }
 }

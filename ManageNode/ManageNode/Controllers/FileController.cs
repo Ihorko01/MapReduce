@@ -3,8 +3,10 @@ using ManageNode.Models;
 using ManageNode.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,10 +27,79 @@ namespace ManagmentServer.Controllers
             {
                 fileView.Add(new FileViewModel { Node = item.Node, CountMap = item.CountMap.ToString(), TimeMap = item.TimeMap, CountShuffle = item.CountShuffle.ToString(), TimeShuffle = item.TimeShuffle, CountReduce = item.CountReduce.ToString(), TimeReduce = item.TimeReduce });
             }
-            db.Statistics.RemoveRange(db.Statistics);
             db.SaveChanges();
 
+            List<PieViewModel> dataPieMap = new List<PieViewModel>();
+            List<PieViewModel> dataPieShuffle = new List<PieViewModel>();
+            List<PieViewModel> dataPieReduce = new List<PieViewModel>();
+            List<PieViewModel> dataLineTime1 = new List<PieViewModel>();
+            List<PieViewModel> dataLineTime2 = new List<PieViewModel>();
+            List<PieViewModel> dataLineTime3 = new List<PieViewModel>();
+
+            List<PieViewModel> avarageLineTime1 = new List<PieViewModel>();
+            List<PieViewModel> avarageLineTime2 = new List<PieViewModel>();
+            List<PieViewModel> avarageLineTime3 = new List<PieViewModel>();
+
+            List<PieViewModel> avaregeTime = new List<PieViewModel>();
+            foreach (var item in fileView)
+            {
+                dataPieMap.Add(new PieViewModel(item.Node, Convert.ToDouble(item.CountMap)));
+                dataPieShuffle.Add(new PieViewModel(item.Node, Convert.ToDouble(item.CountShuffle)));
+                dataPieReduce.Add(new PieViewModel(item.Node, Convert.ToDouble(item.CountReduce)));
+            }
+            var x = Convert.ToDateTime(fileView[0].TimeMap).TimeOfDay.TotalSeconds;
+
+            dataLineTime1.Add(new PieViewModel("Map", Convert.ToDateTime(fileView[0].TimeMap).TimeOfDay.TotalSeconds));
+            dataLineTime1.Add(new PieViewModel("Shuffle", Convert.ToDateTime(fileView[0].TimeShuffle).TimeOfDay.TotalSeconds));
+            dataLineTime1.Add(new PieViewModel("Reduce", Convert.ToDateTime(fileView[0].TimeReduce).TimeOfDay.TotalSeconds));
+
+            dataLineTime2.Add(new PieViewModel("Map", Convert.ToDateTime(fileView[1].TimeMap).TimeOfDay.TotalSeconds));
+            dataLineTime2.Add(new PieViewModel("Shuffle", Convert.ToDateTime(fileView[1].TimeShuffle).TimeOfDay.TotalSeconds));
+            dataLineTime2.Add(new PieViewModel("Reduce", Convert.ToDateTime(fileView[1].TimeReduce).TimeOfDay.TotalSeconds));
+
+            //dataLineTime3.Add(new PieViewModel("Map", Convert.ToDateTime(fileView[2].TimeMap).TimeOfDay.TotalSeconds));
+            //dataLineTime3.Add(new PieViewModel("Shuffle", Convert.ToDateTime(fileView[1].TimeShuffle).TimeOfDay.TotalSeconds));
+            //dataLineTime3.Add(new PieViewModel("Reduce", Convert.ToDateTime(fileView[1].TimeReduce).TimeOfDay.TotalSeconds));
+
+            avarageLineTime1.Add(new PieViewModel("Map", Convert.ToDateTime(fileView[0].TimeMap).TimeOfDay.TotalSeconds / Convert.ToDouble(fileView[0].CountMap)));
+            avarageLineTime1.Add(new PieViewModel("Shuffle", Convert.ToDateTime(fileView[0].TimeShuffle).TimeOfDay.TotalSeconds / Convert.ToDouble(fileView[0].CountShuffle)));
+            avarageLineTime1.Add(new PieViewModel("Reduce", Convert.ToDateTime(fileView[0].TimeReduce).TimeOfDay.TotalSeconds / Convert.ToDouble(fileView[0].CountReduce)));
+
+            avarageLineTime2.Add(new PieViewModel("Map", Convert.ToDateTime(fileView[1].TimeMap).TimeOfDay.TotalSeconds / Convert.ToDouble(fileView[1].CountMap)));
+            avarageLineTime2.Add(new PieViewModel("Shuffle", Convert.ToDateTime(fileView[1].TimeShuffle).TimeOfDay.TotalSeconds / Convert.ToDouble(fileView[1].CountShuffle)));
+            avarageLineTime2.Add(new PieViewModel("Reduce", Convert.ToDateTime(fileView[1].TimeReduce).TimeOfDay.TotalSeconds / Convert.ToDouble(fileView[1].CountReduce)));
+
+            ViewBag.Nodes = JsonConvert.SerializeObject(fileView.Select(s => s.Node).ToList());
+            ViewBag.LinePoints1 = JsonConvert.SerializeObject(dataLineTime1);
+            ViewBag.LinePoints2 = JsonConvert.SerializeObject(dataLineTime2);
+            ViewBag.LineAvarage1 = JsonConvert.SerializeObject(avarageLineTime1);
+            ViewBag.LineAvarage2 = JsonConvert.SerializeObject(avarageLineTime2);
+
+            ViewBag.DataPointsMap = JsonConvert.SerializeObject(dataPieMap);
+            ViewBag.DataPointsShuffle = JsonConvert.SerializeObject(dataPieShuffle);
+            ViewBag.DataPointsReduce = JsonConvert.SerializeObject(dataPieReduce);
+
             return View(fileView);
+        }
+
+        private List<TransformingPartViewModel> GetTransformingPartViews()
+        {
+            string[] ports = new string[]
+            {
+                    ConfigurationManager.AppSettings["datanode1"].ToString(),
+                    ConfigurationManager.AppSettings["datanode2"].ToString(),
+                    ConfigurationManager.AppSettings["datanode3"].ToString()
+            };
+            int fileId = db.Files.Max(f => f.Id);
+            var lines = db.Lines.Where(l => l.FileId == fileId).ToList();
+            var maps = new List<MapFile>();
+            List<TransformingPartViewModel> viewModels = new List<TransformingPartViewModel>();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                maps.Add(db.Map.Where(m => m.LineId == lines[i].Id).FirstOrDefault());
+            }
+            var shuffle = new List<Shuffle>();
+            return viewModels;
         }
 
         //    [HttpPost]

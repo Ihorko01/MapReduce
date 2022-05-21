@@ -5720,11 +5720,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\DataNode3\\DataNode3\\DataNode3.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\DataNode3\\DataNode3\\DataNode3.csproj",
       "projectName": "DataNode3",
-      "projectPath": "C:\\Users\\Admin\\source\\repos\\DataNode3\\DataNode3\\DataNode3.csproj",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\DataNode3\\DataNode3\\DataNode3.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\repos\\DataNode3\\DataNode3\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\DataNode3\\DataNode3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

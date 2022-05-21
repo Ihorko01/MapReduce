@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NuUnlyDARhRXxNnEX/2oOIQRm2mKOzl6Y2Y1AMZFKN7gSzIjNxdnjCeF3hn2Tkf77orAuDBTHocO1ASPKdz2Aw==",
+  "dgSpecHash": "xPG2OkOMgRZEqEh9yR+eRZgHRJqwGDSYnY/GLFYz9HiyqgjuLR5KuzsXqmanz3Vua0SmftUtDASOSO0+SzT7cQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\DataNode3\\DataNode3\\DataNode3.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\DataNode3\\DataNode3\\DataNode3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

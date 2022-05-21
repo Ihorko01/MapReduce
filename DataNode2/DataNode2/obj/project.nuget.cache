@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QopuQ8tBvKI10gRkx4cNW4oAdbSflNMeJLN6wmNQDHcglIhUl727fcBfrCLEn1nzgUhPOZ4pccjx76M7bRnQ3g==",
+  "dgSpecHash": "vHpCgLNGzRpa2jneEeNt+FCIk5414tmAEBS50OWsMa1Mrv/m9yE4sTQkEIg6Git6jl+CuwQVBJBXyvgE8neu9g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\Курсова\\DataNode2\\DataNode2\\DataNode2.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\DataNode2\\DataNode2\\DataNode2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

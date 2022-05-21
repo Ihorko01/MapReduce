@@ -33,10 +33,6 @@ namespace DataNode1.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        [HttpPost]
-        public string Test([FromBody] string a)
-        {
-            return a;
-        }
+        
     }
 }

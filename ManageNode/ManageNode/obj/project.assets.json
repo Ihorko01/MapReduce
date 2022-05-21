@@ -8613,11 +8613,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\Курсова\\ManageNode\\ManageNode\\ManageNode.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\ManageNode\\ManageNode\\ManageNode.csproj",
       "projectName": "ManageNode",
-      "projectPath": "C:\\Users\\Admin\\source\\repos\\Курсова\\ManageNode\\ManageNode\\ManageNode.csproj",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\ManageNode\\ManageNode\\ManageNode.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\repos\\Курсова\\ManageNode\\ManageNode\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\ManageNode\\ManageNode\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

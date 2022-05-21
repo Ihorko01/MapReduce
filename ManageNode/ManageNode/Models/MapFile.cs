@@ -8,8 +8,7 @@ namespace ManageNode.Models
     public class MapFile
     {
         public int Id { get; set; }
-        public string Datas { get; set; }
-        public string Node { get; set; }
-        public int? ShufflesId { get; set; }
+        public int LineId { get; set; }
+        public string Data { get; set; }
     }
 }

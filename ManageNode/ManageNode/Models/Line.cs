@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace ManageNode.Models
 {
-    public class MainFile
+    public class Line
     {
         public int Id { get; set; }
-        public string Path { get; set; }
-        //public SubFile Sub { get; set; }
+        public int FileId { get; set; }
+        public string Data { get; set; }
     }
 }

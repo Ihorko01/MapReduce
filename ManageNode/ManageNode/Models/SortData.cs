@@ -8,7 +8,7 @@ namespace ManageNode.Models
     public class SortData
     {
         public int Id { get; set; }
+        public int ShuffleId { get; set; }
         public string Data { get; set; }
-        public int FileId { get; set; }
     }
 }

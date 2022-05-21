@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kNsgThDVZDFmeEwzH6B9mFGEOyLktUglcf/GlFr4jGNm64iFuslJqw8tohh7rmP18d14zXanvPxnlcyLz4fZUQ==",
+  "dgSpecHash": "mOT+yJUT2qcl9hdTCqRBm18UkgazrXN2RJgFtuxdK9TLfLlRtK4oGY71v9OBuFr6KAJq3CKG1VbI+78wLap5Pg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\Курсова\\DataNode1\\DataNode1\\DataNode1.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\DataNode1\\DataNode1\\DataNode1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\identitymodel\\5.1.0\\identitymodel.5.1.0.nupkg.sha512",

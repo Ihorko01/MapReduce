@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cFrJeF7eWbkFW84L8V05n9zgG0cG3x1Hob7CPIAuiYtWryPeZB2UIXwgCpRG9a5hR0mopish0KPnJFBggwHw/g==",
+  "dgSpecHash": "ZAQG4oncutXh7XrpZlABNgXk322fRuVVK+U+rsU7KW3G55QMx052yfa2ij02NnTU/1n8QPAgX3ZXOugVoX3wUQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\Курсова\\ManageNode\\ManageNode\\ManageNode.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\Programs\\course\\Course\\ManageNode\\ManageNode\\ManageNode.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.3\\microsoft.aspnet.identity.core.2.2.3.nupkg.sha512",
