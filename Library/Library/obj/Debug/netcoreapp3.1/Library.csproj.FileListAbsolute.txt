@@ -7,4 +7,3 @@ D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.cs
 D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.dll
 D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.pdb
 D:\Program Files\source\repos\Library\Library\bin\Debug\netcoreapp3.1\Library.dll.config
-D:\Program Files\source\repos\Library\Library\obj\Debug\netcoreapp3.1\Library.csprojAssemblyReference.cache

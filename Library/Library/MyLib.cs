@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Configuration;
-using Microsoft.Extensions.Configuration;
-using System.Net;
 using Newtonsoft.Json;
 using System.Text;
 using System.IO;
@@ -19,12 +14,14 @@ namespace Library
     public class Methods
     {
         public Uri ManagePort = new Uri("https://localhost:44376/Manage/GetPorts");
+        public Uri ManageSaveFilePath = new Uri("https://localhost:44376/Manage/SaveInfoFile");
+        public Uri ManageSaveInfoLine = new Uri("https://localhost:44376/Manage/SaveInfoLine");
         public Uri ManageSaveInfoMap = new Uri("https://localhost:44376/Manage/SaveInfoMap");
         public Uri ManageSaveInfoReduce = new Uri("https://localhost:44376/Manage/SaveInfoReduce");
         public Uri ManageSaveInfoShuffle = new Uri("https://localhost:44376/Manage/SaveInfoShuffle");
         public Uri ManageShow = new Uri("https://localhost:44376/Manage/Show");
         public Uri ManageClearDB = new Uri("https://localhost:44376/Manage/ClearDataBases");
-
+        public Uri ManageStartShuffle = new Uri("https://localhost:44376/Manage/StartShuffle");
 
         public Func<Dictionary<string, string>, Dictionary<string, string>> FuncBegin { get; set; }
         public Func<string[], string> FuncResult { get; set; }
@@ -34,52 +31,13 @@ namespace Library
             public string FilePath { get; set; }
         }
 
-        private CancellationTokenSource cts = new CancellationTokenSource();
 
-        public void Run(string path, int columnKey, int columnValue)
+        public async void Run(string path)
         {
-            ClearDbAsync(ManageClearDB);
-            BeginMap(path, columnKey, columnValue);
-            var dic = BeginShuffle();
-            BeginReduce(dic);
-            ShowResult();
-        }
-
-        private async void ShowResult()
-        {
-            var ports = Retrieve(ManagePort);
-            var p1 = ports;
-            var p2 = ports;
-            int len = ports.Count;
-            int i = 0;
-            List<List<string>> data = new List<List<string>>();
-            while (p1.Count != 0)
-            {
-                List<string> firstPart = Retrieve(new Uri(p1[i % p1.Count] + "GetSubToShuffle"));
-                if (firstPart.Count == 0)
-                {
-                    p1.Remove(p1[i % p1.Count]);
-                }
-                else
-                {
-                    data.Add(firstPart);
-                }
-                i++;
-            }
-            while (p2.Count != 0)
-            {
-                List<string> secondPart = Retrieve(new Uri(p2[i]));
-                if (secondPart == null)
-                {
-                    p2.Remove(p2[i]);
-                }
-                else
-                {
-                    data.Add(secondPart);
-                }
-                i++;
-            }
-            SendDataAsync(ManageShow, data);
+            await ClearDbAsync(ManageClearDB);
+            BeginMap(path);
+            BeginShuffle();
+            BeginReduce();
         }
 
         public async Task SendDataAsync(Uri uri, List<List<string>> content)
@@ -104,51 +62,63 @@ namespace Library
                 }
             }
         }
+        public void SendFunction(Uri uri, Delegate @delegate)
+        {
+            using (var client = new HttpClient())
+            {
+                HttpRequestMessage request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = uri,
 
-        private async void BeginReduce(Dictionary<string, List<string>> dic)
+                };
+            }
+        }
+        private void BeginReduce()
         {
             var ports = Retrieve(ManagePort);
             int i = 0;
 
-            foreach (var key in dic.Keys)
+            foreach (var port in ports)
             {
-                string count = string.Empty;
-
-                count = RetryReduce(FuncResult, dic[key].ToArray());
-                string content = $"{key}={count};";
                 Stopwatch sw = Stopwatch.StartNew();
-                var t1 = Task.Run(() => SendDataAsync(new Uri((ports[i % ports.Count] + "Reduce").ToString()), content));
-                Console.WriteLine($"Reduce-{ports[i % ports.Count]}\t{t1.Result}");
-                t1.Wait();
-                sw.Stop();
-                if (t1.Result.ToString() == "OK")
+                var data = GetResponseFromURI(new Uri($"{port}GetDataForReduce")).Result;
+                foreach (var item in data.Split('|'))
                 {
-                    var t2 = Task.Run(() => SendDataSave(ManageSaveInfoReduce, new List<object> { ports[i % ports.Count], sw.Elapsed }).ToString());
+                    string[] values = item.Split('=')[1].Split(';');
+                    string key = item.Split('=')[0];
+                    var t1 = Task.Run(() => SendDataAsync(new Uri((port + "Reduce").ToString()),
+                        $"{key}={RetryReduce(FuncResult, values)}"));
+                    t1.Wait();
+                    sw.Stop();
+                    var t2 = Task.Run(() => SendDataSave(ManageSaveInfoReduce, new List<object> { port, sw.Elapsed }).ToString());
                     t2.Wait();
                 }
-                i++;
             }
         }
 
-        private Dictionary<string, List<string>> BeginShuffle()
+        private void BeginShuffle()
         {
             var ports = Retrieve(ManagePort);
             List<string> data = new List<string>();
+
+
             for (int i = 0; i < ports.Count; i++)
             {
                 Stopwatch sw = Stopwatch.StartNew();
                 data.Add(GetResponseFromURI(new Uri(ports[i] + "Shuffle")).Result);
                 Console.WriteLine($"Shuffle-{ports[i]}");
                 sw.Stop();
-                var t2 = Task.Run(() => SendDataSave(ManageSaveInfoShuffle, new List<object> { ports[i % ports.Count], sw.Elapsed }).ToString());
-                t2.Wait();
+                //var t2 = Task.Run(() => SendDataSave(ManageSaveInfoShuffle, new List<object> { ports[i % ports.Count], sw.Elapsed }).ToString());
+                //t2.Wait();
             }
-            return SortData(data);
+            var t = Task.Run(() => PostURI(ManageStartShuffle));
+            t.Wait();
         }
 
         private Dictionary<string, List<string>> SortData(List<string> shuffle)
         {
-            var ports = Retrieve(ManagePort);
+            //var ports = Retrieve(ManagePort);
             Dictionary<string, List<string>> sortData = new Dictionary<string, List<string>>();
             for (int i = 0; i < shuffle.Count; i++)
             {
@@ -182,59 +152,59 @@ namespace Library
         }
 
         [HttpPost]
-        private async void BeginMap(string path, int key, int value)
+        private void BeginMap(string filePath)
         {
-            if (File.Exists(path))
+            if (File.Exists(filePath))
             {
+                var t = Task.Run(() => SendDataAsync(ManageSaveFilePath, filePath));
+                t.Wait();
+
+                List<Dictionary<string, string>> lineValues = new List<Dictionary<string, string>>();
+                List<string> lines = new List<string>();
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    string[] headerLine = sr.ReadLine().Split(',');
+
+                    while (sr.Peek() != -1)
+                    {
+                        string line = sr.ReadLine();
+                        lines.Add(line);
+                    }
+                    foreach (var row in lines)
+                    {
+                        Dictionary<string, string> pairs = new Dictionary<string, string>();
+                        for (int j = 0; j < headerLine.Length; j++)
+                        {
+                            pairs.Add(headerLine[j], row.Split(',')[j]);
+                        }
+                        lineValues.Add(pairs);
+                    }
+                }
                 var ports = Retrieve(ManagePort);
-                string filename = Path.GetFileName(path);
-                List<List<string>> Blocks = new List<List<string>>();
-                List<string> list = File.ReadAllLines(path).ToList();
                 for (int i = 0; i < ports.Count; i++)
                 {
-                    string content = filename;
-                    var t = Task.Run(() => SendDataAsync(new Uri((ports[i] + "SaveFileInDB").ToString()), content));
-                    t.Wait();
+                    var task = Task.Run(() => SendDataAsync(new Uri((ports[i] + "SaveFileInDB").ToString()), filePath));
+                    task.Wait();
                 }
-                int p = 0;
-                string[] headers = list[0].Split(',');
-                Dictionary<string, string> headValuePairs = new Dictionary<string, string>();
-                for (int i = 1; i < list.Count; i++)
+                int portIndex = 0;
+                foreach (var line in lineValues)
                 {
-                    string lineKey = string.Empty;
-                    string lineValue = string.Empty;
-                    string[] split = list[i].Split(',');
-
-                    for (int y = 0; y < headers.Length; y++)
-                    {
-                        headValuePairs.Add(headers[y], split[y]);
-                    }
-                    lineKey += split[key];
-                    lineValue += split[value];
-                    Blocks.Add(new List<string> { lineKey, lineValue });
-                    Dictionary<string, string> pairs = RetryMap(FuncBegin, Blocks[i][0]) as Dictionary<string, string>;
-
-                    string content = new Uri(ports[p % ports.Count]).LocalPath.ToString();
+                    Dictionary<string, string> keyValues = (Dictionary<string, string>)RetryMap(FuncBegin, line);
+                    var t0 = Task.Run(() => SendDataAsync(ManageSaveInfoLine, lines[portIndex]));
+                    t0.Wait();
                     Stopwatch sw = Stopwatch.StartNew();
-                    var t1 = Task.Run(() => SendKeyValue(new Uri((ports[p % ports.Count] + "Map").ToString()), pairs, Blocks[i][1]));
-                    Console.WriteLine($"Map-{ports[p % ports.Count]}\t{t1.Result}");
+                    var t1 = Task.Run(() => SendKeyValue(new Uri((ports[portIndex % ports.Count] + "Map").ToString()), keyValues.Keys.First(), keyValues.Values.First()));
+                    Console.WriteLine($"Map-{ports[portIndex % ports.Count]}\t{t1.Result}");
                     t1.Wait();
                     sw.Stop();
                     if (t1.Result.ToString() == "OK")
                     {
-                        var t2 = Task.Run(() => SendDataSave(ManageSaveInfoMap, new List<object> { ports[p % ports.Count], sw.Elapsed, Blocks[i][0], Blocks[i][1] }).ToString());
+                        var t2 = Task.Run(() => SendDataSave(ManageSaveInfoMap, new List<object> { ports[portIndex % ports.Count], sw.Elapsed, keyValues.Keys.First(), keyValues.Values.First() }).ToString());
                         t2.Wait();
                     }
-                    p++;
-
+                    portIndex++;
                 }
             }
-        }
-
-        private Dictionary<string, string> InitialFileProcessing(Delegate method, object parameters)
-        {
-            Dictionary<string, string> convertData = new Dictionary<string, string>();
-            return convertData;
         }
 
         private object RetryMap(Delegate method, object row)
@@ -242,17 +212,9 @@ namespace Library
             return method.DynamicInvoke(row);
         }
 
-        private string RetryReduce(Delegate method, object args)
+        private object RetryReduce(Delegate method, object args)
         {
-            try
-            {
-                string str = Convert.ToString(method.DynamicInvoke(args));
-                return str;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return method.DynamicInvoke(args);
         }
 
         static async Task<string> SendKeyValue(Uri u, string key, string value)
@@ -323,29 +285,6 @@ namespace Library
             return response;
         }
 
-        //static async Task<string> SendURI(Uri u, string content)
-        //{
-        //    HttpContent c = new StringContent(content, Encoding.UTF8, "application/json");
-
-        //    var response = string.Empty;
-        //    using (var client = new HttpClient())
-        //    {
-        //        HttpRequestMessage request = new HttpRequestMessage
-        //        {
-        //            Method = HttpMethod.Post,
-        //            RequestUri = u,
-        //            Content = c
-        //        };
-
-        //        HttpResponseMessage result = await client.SendAsync(request);
-        //        if (result.IsSuccessStatusCode)
-        //        {
-        //            response = result.StatusCode.ToString();
-        //        }
-        //    }
-        //    return response;
-        //}
-
         static async Task<string> GetResponseFromURI(Uri u)
         {
             var response = "";
@@ -367,29 +306,29 @@ namespace Library
             {
 
                 var response = await client.PostAsync(managePort, null);
-
                 var responseString = await response.Content.ReadAsStringAsync();
             }
         }
-        //static async Task<string> PostURI(Uri u)
-        //{
-        //    var response = string.Empty;
-        //    using (var client = new HttpClient())
-        //    {
-        //        HttpRequestMessage request = new HttpRequestMessage
-        //        {
-        //            Method = HttpMethod.Post,
-        //            RequestUri = u
-        //        };
 
-        //        HttpResponseMessage result = await client.SendAsync(request);
-        //        if (result.IsSuccessStatusCode)
-        //        {
-        //            response = result.StatusCode.ToString();
-        //        }
-        //    }
-        //    return response;
-        //}
+        static async Task<string> PostURI(Uri u)
+        {
+            var response = string.Empty;
+            using (var client = new HttpClient())
+            {
+                HttpRequestMessage request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = u
+                };
+
+                HttpResponseMessage result = await client.SendAsync(request);
+                if (result.IsSuccessStatusCode)
+                {
+                    response = result.StatusCode.ToString();
+                }
+            }
+            return response;
+        }
 
 
         private List<string> Retrieve(Uri uri)
